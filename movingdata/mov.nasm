@@ -1,13 +1,25 @@
+; moving data
+
+; When working with memory define size.
+; mov only works if both operands are of same size.
+
+
 SECTION .data
-var1	db 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x11, 0x22
-var2 dq 0x1122334455667788
+    var db 0x37
+    var1 db 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x11, 0x22
+    var2 dq 0x1122334455667788
 
 SECTION .text
 
 global _start
 
 _start:        
-									; mov immediate data to register 
+
+    mov rax, var       ; var is the address
+    xor rax, rax
+    mov al, byte [var] ; [var] is the value of var which is 0x37
+
+                                    ; mov immediate data to register 
 	mov rax, 0xaaaaaaaabbbbbbbb
 	mov eax, 0xaaaaaaaa
 	mov rax, 0xaaaaaaaabbbbbbbb
@@ -37,16 +49,21 @@ _start:
 	mov dword [var1], eax
 	mov qword [var1], rax
 
-									; lea demo gets address of source
-	lea rax, [var1]
+; Load Effective Address
+
+	lea rax, [var1]                 
 	lea rbx, [rax] 
+
+; Exchange 
 
 									; xchg  
 	mov rax, 0x1234567890abcdef
 	mov rbx, 0x9999999999999999
 	xchg rax, rbx
 
-									; exit call  
-	mov rax, 0x3c
-	mov rdi, 0		
+
+;exit call
+
+	mov rax, 60   
+	mov rdi, 0
 	syscall
