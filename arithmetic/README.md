@@ -28,9 +28,11 @@ instructions operate on registers or memory locations and can perform various ar
 - Multiplication
   - **MUL** (Unsigned Multplication)
   - **IMUL** (Signed Mul...)
+  - **IMUL** (with 2 operands)
+  - **IMUL** (with 3 operands)
 - Division
   - **DIV** (Unsigned Division)
-  - **IDIV** (Signed Divi...)
+  - **IDIV** (Signed Div...)
 - Sign Extension Instructions
   - **CBW**
   - **CWD**
@@ -175,6 +177,8 @@ The CMP instruction subtracts the value of Operand2 from the value in Operand1 .
 
 ## Multiplication
 
+![Arithmetic Multiplication](../img/arithmeticmultiplication.png)
+
 | Operand   |  SizeMultiplier |  (Operand)Multiplicand | (Implicit)Destination    |
 |:---------:|:---------------:|:----------------------:|:------------------------:|
 | Byte      |    r/m8         |        AL              |     AX = AL * r/m8       |
@@ -209,9 +213,37 @@ The CMP instruction subtracts the value of Operand2 from the value in Operand1 .
     IMUL bl 
 ```
 
+#### IMUL with 2 operands
+---
+
+```
+    mov r8, 3456789d
+    mov r9, -537d
+    IMUL r9, r8
+```
+
+- Destination operand must be a register.
+- Source operand can be immediate value / register / memory.
+
+<br>
+
+#### IMUL with 3 operands
+---
+
+```
+    mov r8, 38475342d
+    IMUL r9, r8, -34567d
+```
+
+- Destination operand must be a register.
+- Source 1 Operand can be register / memory.
+- Source 2 Opernad can be immediate value only
+
 <br>
 
 ## Division
+
+![Arithmetic Multiplication](../img/arithmeticdivision.png)
 
 | Operand Size          |  Dividend     |  Divisor | Quotient    | Remainder | Maximum Quotient  |
 |:---------------------:|:-------------:|:--------:|:-----------:|:---------:|:-----------------:|

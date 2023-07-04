@@ -2,6 +2,10 @@
 
 ; When CF and OF are set it means the result is extended to the upper register
 
+; mov ax, 10d
+; mov bx, 20d
+; mul bx          ; DX:AX = ax * bx   ; lower 16 bits(2 bytes) in AX and upper in DX
+
 SECTION .data
 
     var1 db 0x42
