@@ -4,6 +4,44 @@
 
 <br>
 
+## Contents
+
+- Control of Flow
+  - Control of Flow of Program Execution
+  - Types
+- Unconditional JUMP Instruction
+  - Types of unconditional jump
+    - Short Jump
+    - Near Jump
+    - Far Jump
+    - Task Switch
+- CMP Instruction
+- Conditional JUMP Instructions
+  - Types
+  - Unsigned Instructions
+  - Signed Instructions
+- Codes
+  - Example 0x1
+    - High level Language Code
+    - Assembly code
+  - Example 0x2
+    - High level Language Code
+    - Assembly code
+  - Example 0x3
+    - High level Language Code
+    - Assembly code
+  - Example 0x4
+    - High level Language Code
+    - Assembly code
+  - Example 0x5
+    - High level Language Code
+    - Assembly code
+- Repetition Structure
+  - For Loop
+  - While Loop
+  - Do While loop
+
+
 ## Control of Flow
 
 <br>
@@ -143,12 +181,16 @@ the processor
 ### Unsigned Jumps
 ---
 
+Conditional unsigned jumps are used when the previous arithmetic operation's result is treated as an unsigned integer. In an unsigned integer representation, all bits contribute to the value, and there is no dedicated sign bit.
+
 ![Unsigned Jumps](../img/unsignedjumps.png)
 
 <br>
 
 ### Signed Jumps
 ---
+
+Conditional signed jumps are used when the previous arithmetic operation's result is treated as a signed integer. In a signed integer representation, the leftmost bit (most significant bit) represents the sign, where 0 indicates a positive number, and 1 indicates a negative number.
 
 ![Signed Jumps](../img/signedjumps.png)
 
@@ -389,53 +431,3 @@ _end:
 ```
 
 <br>
-
-## Repetition Structure
-
-<br>
-
-### Loop
----
-
-- **Remember to preserve the
-value of loop counter inside the
-body of loop, as it may change
-during a system/library/procedure
-call**.
-
-- Performs a loop operation using the
-**RCX, ECX or CX** register as a counter.
-
-- Each time the LOOP instruction is
-executed, the count register is
-automatically decremented by one.
-
-- If the counter register rcx is not zero, a
-short jump (-128 to 127 from current rip
-value) is performed to the label.
-
-- The loop is terminated when the value of
-counter register becomes equal to zero,
-and program execution continues with
-the instruction following the LOOP
-instruction.
-
-- Other variations are loope and loopne.
-
-```
-SECTION .text
-    global start
-_start:
-
-    mov rcx, 5 ;initialize counter
-
-_loopbody:
-    ; loop instructions
-
-loop _loopbody
-
-; exit gracefully
-    mov rax, 60
-    mov rdi, 0
-    syscall
-```
