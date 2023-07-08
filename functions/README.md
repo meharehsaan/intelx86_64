@@ -17,6 +17,14 @@ order to perform some **specific** task, thus making a program more **structural
 -  Example 0x1 (Simple funtion/procedure call)
 -  Example 0x2 (using loop instruction)
 -  Example 0x3 (Preserving register value)
+-  Passing and Returning Values from Functions
+-  Returning Value from Function
+-  Passing Arguments to Function
+-  Displaying a Single Decimal Digit on Screen
+-  Multi-File Assembly Program
+   -  External Functions
+- Compilation of program
+
 
 ## Difference b/w procedure and function
 
@@ -216,9 +224,10 @@ printmsg:
 
 A function may have **arguments/parameters**, which might be **integer/floating** point values as well as addresses pointing to data. This enable a function to operate on different data with each call. Other than parameters, most functions have a **return value** which is commonly an indicator of success or failure.
 
-- In the 16 and 32 bit days, since there were only eight general purpose
-registers, therefore, all the arguments were passed by the caller to the
-callee by pushing the arguments on the stack.
+- On x86-64, **Linux**, Solaris and Mac OS use a function call protocol called
+the **System-V AMD64 ABI**. In which first **six** integer parameters are passed
+via **registers** and first **eight** floating point parameters via **xmm0 to xmm7**
+registers **(rest on the runtime stack)**
 
 <br>
 
@@ -231,6 +240,26 @@ callee by pushing the arguments on the stack.
 |     5     |  r8   |    r8d     |
 |     6     |  r9   |    r9d     |
 |    >6     | stack |   stack    |
+
+<br>
+
+- On x86-64, **MS Windows** use MS X64 Calling Convention. In which first
+**four** integer parameters are passed via **registers** and first **four** floating point
+parameters via **xmm0 to xmm3** registers **(rest on the runtime stack)**
+
+| Parameter | Qword | Doubleword |
+| :-------: | :---: | :--------: |
+|     1     |  rcx  |    ecx     |
+|     2     |  rdx  |    edx     |
+|     3     |  r8   |    r8d     |
+|     4     |  r9   |    r9d     |
+|    >4     | stack |   stack    |
+
+<br>
+
+- In the 16 and 32 bit days, since there were only eight general purpose
+registers, therefore, all the arguments were passed by the caller to the
+callee by pushing the arguments on the stack.
 
 <br>
 
@@ -283,3 +312,87 @@ main:
 sumOfThree:
     <implementation>
 ```
+
+<br>
+
+### Displaying a Single Decimal Digit on Screen
+---
+
+```
+SECTION .data
+    str db 0x0, 0xa
+SECTION .text
+    global _start
+_start:
+
+    mov rdi, 7
+    call printdigit
+
+; exit gracefully
+    mov rax, 60
+    mov rdi, 0
+    syscall
+printdigit:
+
+    add rdi, 48 ; convert digit to ascii
+    mov byte [str], dil
+
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, str
+    mov rdx, 2
+    syscall
+
+    ret
+```
+
+<br>
+
+### Multi-File Assembly Program
+---
+
+```
+SECTION .text
+    global main
+    extern sumOfThree         ; including some external file functions
+    extern printUnsignedInt   
+
+main:
+    mov rdi, 1500
+    mov rsi, 411
+    mov rdx, 110
+    call sumOfThree           ; call to external functions
+    mov rdi, rax
+    call printUnsignedInt
+    ret
+```
+
+#### External Functions
+---
+
+```
+SECTION .text
+    global sumOfThree
+    global printUnsignedInt
+
+sumOfThree:
+    ;code of the function
+    ret
+printUnsignedInt:
+    ;code of the function
+    ret
+```
+
+<br>
+
+### Compilation of program
+---
+
+```
+    nasm –felf64 myfunctions.nasm
+    nasm –felf64 externalfunctions.nasm
+    gcc --static externalfunctions.o myfunctions.o -o myexe 
+    ./myexe
+```
+
+<br>

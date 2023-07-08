@@ -1,3 +1,6 @@
+; Function Arguments
+
+
 SECTION .text
     global main
 main:
